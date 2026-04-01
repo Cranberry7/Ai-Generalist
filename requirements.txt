@@ -1,0 +1,6 @@
+pymupdf
+Pillow
+pydantic
+google-genai
+python-dotenv
+python-docx
