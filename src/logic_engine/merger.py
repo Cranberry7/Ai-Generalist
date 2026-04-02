@@ -82,7 +82,6 @@ def evaluate_and_merge(phase2_json_path: str, image_dir: str, output_path: str) 
                     
             obs["associated_images"] = valid_images
 
-        # Re-save the vetted payload
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(diagnostic_data, f, indent=4, ensure_ascii=False)
             

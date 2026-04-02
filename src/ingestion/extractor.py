@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Set
 
 try:
-    import fitz  # PyMuPDF
+    import fitz
 except ImportError:
     fitz = None
 
@@ -24,7 +24,7 @@ def _save_extracted_image(doc: "fitz.Document", xref: int, image_path: str, seen
         if pix.n - pix.alpha > 3:
             pix = fitz.Pixmap(fitz.csRGB, pix)
             
-        # 🚨 Deduplication Strategy: Hash the raw pixel bytes
+        # Deduplication Strategy: Hash the raw pixel bytes
         # Extremely common for PDFs to repeat a large background gradient or header image 50 times.
         # Hashing guarantees if the image is visually identical to a previous one, we skip it.
         img_hash = hashlib.md5(pix.samples).hexdigest()
@@ -51,7 +51,7 @@ def _extract_page_images(doc: "fitz.Document", page_num: int, output_dir: str, d
         width = img_info[2]
         height = img_info[3]
         
-        # 🚨 DIMENSION FILTER: Ignore lines, background tiles, and tiny logos
+        #DIMENSION FILTER: Ignore lines, background tiles, and tiny logos
         if width < 200 or height < 200:
             continue
             
