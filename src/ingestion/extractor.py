@@ -87,8 +87,12 @@ def extract_pdf_assets(pdf_path: str, output_image_dir: str, doc_prefix: str) ->
         doc = fitz.open(pdf_path)
         logger.info(f"Successfully opened {pdf_path} ({len(doc)} pages)")
         
+        total_extracted_text = 0
+        
         for page_num in range(len(doc)):
             page_text = _extract_page_text(doc[page_num])
+            total_extracted_text += len(page_text)
+            
             saved_images = _extract_page_images(doc, page_num, output_image_dir, doc_prefix, seen_image_hashes)
             
             extracted_data.append({
@@ -96,6 +100,9 @@ def extract_pdf_assets(pdf_path: str, output_image_dir: str, doc_prefix: str) ->
                 "text": page_text,
                 "images": saved_images
             })
+            
+        if total_extracted_text < 10:
+            logger.warning(f"⚠️ SCANNED PDF DETECTED: Unable to extract text bytes natively from '{os.path.basename(pdf_path)}'. Optical Character Recognition (OCR) fallback is required.")
             
     except Exception as e:
         logger.error(f"An error occurred while processing {pdf_path}: {str(e)}")
